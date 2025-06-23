@@ -1,0 +1,14 @@
+const express = require('express'); //use express
+const UserController = require('./routes/userRoutes');
+const app = express(); //create app using express
+
+app.use('/api/v1/user',UserController)
+
+app.listen(5000, ()=>console.log('App is running on port 5000')); //run on port
+
+
+//to access user API use below Path
+//http://localhost:5000/api/v1/user (get & post)
+//http://localhost:5000/api/v1/user/anyid (delete & put)
+
+// v1 - version 1
