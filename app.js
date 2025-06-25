@@ -1,4 +1,10 @@
 const express = require('express'); //use express
+
+// to use storage
+const storage = require('node-persist');
+storage.init(); //initialiaze storage
+
+
 const UserController = require('./routes/userRoutes');
 const app = express(); //create app using express
 
