@@ -1,6 +1,8 @@
 //write all data related logic
 const storage = require('node-persist');
+const bcrypt = require('bcrypt');
 
+//GET
 const getAllUsers = async function (req, res) {
     try {
         const value = await storage.values(); //gives all values
@@ -21,13 +23,16 @@ const getUserById = async (req, res) => {
         return res.status(404).send({ 'Message': 'User Not Found' })
 }
 
+//POST
 const addUser =  (req, res) => {
-    const { id, name, email, country } = req.body;
-    storage.setItem(id, { id, name, email, country });
+    const { id, name, email, country, password } = req.body;
+    const hashPassword = bcrypt.hash(password,10)
+    storage.setItem(id, { id, name, email, country, password:hashPassword });
     //console.log(req.body); //this is form data coming from user
     res.status(201).send('new User created')
 }
 
+//DELETE
 const deleteUserById = async (req, res) => {
     const id = req.params.id; // id I am capturing from URL
     const userData = await storage.getItem(id);
@@ -41,18 +46,20 @@ const deleteUserById = async (req, res) => {
 
 }
 
-
+//PUT
 const updateUserById = async (req, res) => {
     const id = req.params.id; // id I am capturing from URL
     const userData = await storage.getItem(id);
     if(userData){ 
-        const {name,email,country}=req.body; //getting data from the BODY
+        const {name,email,country, password}=req.body; //getting data from the BODY
         if(name)    //checking if it is available
             userData.name=name
         if(email)
             userData.email=email
         if(country)
             userData.country=country
+        if(password)
+            userData.password=await bcrypt.hash(password,10);
         await storage.updateItem(id,userData)
         res.status(200).send({message:'User updated successfully'})
     } else{
