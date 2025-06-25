@@ -69,6 +69,24 @@ const updateUserById = async (req, res) => {
     
 }
 
+//login function
+const loginUser = async (req,res)=>{
+    const {email, password}=req.body;
+    if(!email || !password)
+        return res.status(403).send({message: 'All fields are mandatory'})
+    const users = await storage.values();
+    const user = users.find(u => u.email ==email);
+    if(user){
+        const result = await bcrypt.compare(password,user.password); //og data & encrypted password
+        if(result)
+            return res.status(200).send('Logged in Successful')
+        else
+            return res.send('Invalid Credentials') 
+    } else{
+        return res.send(`${email} is not registered with Us`)
+    }
+}
+
 
 //exporting multiple functions (function names separated by comma)
 module.exports = { 
@@ -76,5 +94,6 @@ module.exports = {
     getUserById, 
     addUser,
     deleteUserById,
-    updateUserById
+    updateUserById,
+    loginUser
 }

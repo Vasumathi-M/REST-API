@@ -1,15 +1,17 @@
 const express = require('express'); //use express
-
 // to use storage
 const storage = require('node-persist');
 storage.init(); //initialiaze storage
-
-
+//to use CORS
+const cors = require('cors');
 const UserController = require('./routes/userRoutes');
 const app = express(); //create app using express
 
 //in-built middleware to parse data
 app.use(express.json()) //JSON Parser
+
+//third party middleware to handle request from frontend
+app.use(cors());
 
 app.use('/api/v1/user',UserController)
 

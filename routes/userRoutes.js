@@ -1,5 +1,5 @@
 const express = require('express');
-const {getUserById, getAllUsers, addUser, deleteUserById, updateUserById } = require('../controllers/userController');
+const {getUserById, getAllUsers, addUser, deleteUserById, updateUserById, loginUser } = require('../controllers/userController');
 
 
 //creating Router using express's in-built function
@@ -32,5 +32,8 @@ router.delete('/:id', deleteUserById)
 // /user/3 means update user 3
 //cannot update ID
 router.put('/:id', updateUserById)
+
+//login URL
+router.post('/login', loginUser)
 
 module.exports = router // export the router to use it in app.js
