@@ -2,6 +2,9 @@ const express = require('express'); //use express
 const UserController = require('./routes/userRoutes');
 const app = express(); //create app using express
 
+//in-built middleware to parse data
+app.use(express.json()) //JSON Parser
+
 app.use('/api/v1/user',UserController)
 
 app.listen(5000, ()=>console.log('App is running on port 5000')); //run on port
